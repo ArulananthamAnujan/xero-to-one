@@ -6,6 +6,8 @@ Version: 1.2 · 9 Oct 2026 · Owner: Anujan (product lead and tech lead)
 
 ### Version 1.2 — 9 Oct 2026 (DOCS-001)
 
+- **REF-001 follow-up, Anujan’s 9 Oct decision:** reserve DOCS-xxx for handbook/plan changes; rename invoice PDF to PDF-001 and email delivery to EMAIL-001 with its PDF-001 dependency. No feature scope changes.
+
 - Point section 2 to the handbook's source authority, commit-pinned licence register, external cloning, original design-note and written reuse approval rules.
 - Add REF-001 after DOCS-001 merge and before the existing Part E sequence; update the first-two-weeks reference study item. Roles, Xero rules and phase feature scope are unchanged.
 
@@ -206,8 +208,8 @@ Phase progression still requires Anujan's approval and the applicable engineerin
 | SALES-002 | Implement invoice draft commands | SALES-001, API-005 |
 | SALES-003 | Implement invoice issue command | SALES-002, API-004, OUTBOX-001 |
 | SALES-004 | Build invoice draft/issue/list/detail screens | SALES-003, WEB-002 |
-| DOCS-001 | Generate immutable invoice PDF with approved template | SALES-003, OUTBOX-003 |
-| DOCS-002 | Add email delivery adapter and delivery status | DOCS-001 |
+| PDF-001 | Generate immutable invoice PDF with approved template | SALES-003, OUTBOX-003 |
+| EMAIL-001 | Add email delivery adapter and delivery status | PDF-001 |
 | SALES-005 | Implement credit-note and void commands | SALES-003, LEDGER-007 |
 | SALES-006 | Build credit/void confirmation and document views | SALES-005, SALES-004 |
 | PURCHASES-001 | Define bill schema and contracts (expense-claim schema deferred) | CONTACTS-002, TAX-002 |
@@ -227,7 +229,7 @@ Phase progression still requires Anujan's approval and the applicable engineerin
 
 **Authorised next work and gates:** DOCS-000 / PR #2 is merged. DOCS-001 version 1.2 must be reviewed and merged by Anujan first. Then complete REF-001 (docs only) under AGENTS.md section 2: record Bigcapital and Frappe Books in the licence register, clone outside the repository, write three original design notes per project on ledger invariants, document posting and tax/rounding, and send `docs/reference-notes/REF-001-comparison.md` comparing both with documented Xero behaviour and marking unconfirmed findings. After REF-001, continue in order, each as its own PR: (1) draft ADR-0001 scope, ADR-0002 data/tenancy, ADR-0003 identity, ADR-0004 Valkey queue, ADR-0006 residency/recovery for Anujan's approval; (2) expand/approve/build REPO-001, CI-001 and CI-002; (3) write initial provisional rounding, draft/post/reversal, lock and credit-note decisions for Anujan to approve before code; (4) expand/approve/build MONEY-001 and MONEY-002 with configurable rounding; (5) create compliance source register SRC-01–09, marking unconfirmed sources. The later ledger-specific ADR-0005 named in the study remains a prerequisite proposal for its dependent ledger tasks, not permission to start it in Part D. All later tasks remain gated by approved expanded briefs. No infrastructure apply, account creation, spend, email or application to ATO/banks/providers is authorised yet. Do not add dependencies beyond study §5 without the full golden-rule-9 evidence; named dependencies still require that evidence.
 
-The DOCS-001 v1.2 handbook-policy ticket is distinct from the existing invoice-PDF DOCS-001 in the task index; merging this policy does not complete that PDF task or satisfy DOCS-002's PDF dependency. The duplicate ID needs Anujan's later renumbering decision.
+Task IDs: DOCS-xxx is reserved for handbook and plan changes. The former invoice-PDF DOCS-001 is PDF-001; former email-delivery DOCS-002 is EMAIL-001, which depends on PDF-001. Historical study IDs are superseded by this mapping; handbook-policy completion does not satisfy either delivery task.
 
 ## 6. Team structure
 

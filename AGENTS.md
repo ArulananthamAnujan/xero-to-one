@@ -8,6 +8,8 @@ Every AI agent building the accounting platform reads this handbook before every
 
 ### Version 1.2 — 9 Oct 2026 (DOCS-001)
 
+- **REF-001 follow-up, Anujan’s 9 Oct decision:** reserve DOCS-xxx for handbook/plan changes; rename invoice PDF to PDF-001 and email delivery to EMAIL-001 with its PDF-001 dependency. No feature scope changes.
+
 - Add section 2 reference-project authority order, commit-pinned licence register, external clone locations, original design notes and written reuse approval rules.
 - Require linked reference-project evidence in accounting decisions and REFERENCES in the section 15 task brief.
 - Gate REF-001 study/comparison on DOCS-001 merge, before the existing Part E sequence; preserve roles, Xero rules and all existing implementation approvals.
@@ -147,7 +149,7 @@ Agents use three kinds of reference, in this order of authority. If sources disa
 
 **Current execution authorisation (approval Parts D–G):** DOCS-000 / PR #2 is merged. DOCS-001 is docs only; Anujan reviews and merges it. After DOCS-001 merges, complete REF-001 above, then continue the approved Part E order: draft ADR-0001 (scope), ADR-0002 (data/tenancy), ADR-0003 (identity), ADR-0004 (Valkey queue) and ADR-0006 (residency/recovery), each in its own docs-only PR for Anujan. Then expand/approve/build REPO-001, CI-001 and CI-002 as separate PRs; create the provisional decisions register for Anujan's per-decision approval; expand/approve/build MONEY-001 and MONEY-002 using configurable rounding; start compliance sources SRC-01–09. Do not expand more than three upcoming tasks. No cloud infrastructure apply, account creation, money spent, emails or applications to ATO/banks/providers are authorised yet. No dependency beyond study report §5 may be introduced without golden-rule-9 evidence; that evidence rule still applies to named dependencies. At the end of each session, write `docs/status/YYYY-MM-DD.md` (Australia/Sydney date), under one page, with opened/merged/review-waiting/blocked PRs, blocker owners, decisions for Anujan and scope/timeline findings; then stop.
 
-The DOCS-001 v1.2 handbook-policy ticket is distinct from the existing invoice-PDF DOCS-001 in the task index; merging this policy does not complete that PDF task or satisfy DOCS-002's PDF dependency. The duplicate ID needs Anujan's later renumbering decision.
+Task IDs: DOCS-xxx is reserved for handbook and plan changes. The former invoice-PDF DOCS-001 is PDF-001; former email-delivery DOCS-002 is EMAIL-001, which depends on PDF-001. Historical study IDs are superseded by this mapping; handbook-policy completion does not satisfy either delivery task.
 
 **Context every agent gets:** this handbook, the module's MODULE.md, the relevant OpenAPI section, the task brief, and the database schema for the tables involved. Agents start each task from a clean context rather than one long chat.
 
