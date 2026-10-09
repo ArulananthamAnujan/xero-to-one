@@ -1,8 +1,13 @@
 # Accounting Platform Build Plan
 
-Version: 1.1 · 9 Oct 2026 · Owner: Anujan (product lead and tech lead)
+Version: 1.2 · 9 Oct 2026 · Owner: Anujan (product lead and tech lead)
 
 ## Change log
+
+### Version 1.2 — 9 Oct 2026 (DOCS-001)
+
+- Point section 2 to the handbook's source authority, commit-pinned licence register, external cloning, original design-note and written reuse approval rules.
+- Add REF-001 after DOCS-001 merge and before the existing Part E sequence; update the first-two-weeks reference study item. Roles, Xero rules and phase feature scope are unchanged.
 
 ### Version 1.1 — 9 Oct 2026 (DOCS-000)
 
@@ -43,7 +48,7 @@ Where we beat Xero:
 
 ## 2. How we use the open-source projects
 
-Each project is a reference design for specific modules: we read its data model and workflows, then write our own implementation. No code is copied unless its licence is MIT or Apache and the tech lead approves it.
+Each project is a reference design for specific modules: we read its data model and workflows, then write our own implementation. Follow AGENTS.md section 2, "Reference projects — open source", for the authority order (official Australian sources, then Xero documentation, then reference projects), commit-pinned licence register, cloning outside this repository, original design notes and reuse approvals.
 
 | Project | GitHub | Study it for | Stack |
 | --- | --- | --- | --- |
@@ -56,15 +61,7 @@ Each project is a reference design for specific modules: we read its data model 
 | Crater | crater-invoice/crater | Estimates, expenses, simple invoicing UI | Laravel, Vue |
 | GnuCash / Beancount / LedgerSMB | Gnucash/gnucash, beancount/beancount, ledgersmb/LedgerSMB | Accounting correctness rules, trial balance, reconciliation logic | C, Python, Perl |
 
-Licence rules for the team:
-
-1. Before opening any repo, record its licence in our tracker.
-
-2. GPL, AGPL, LGPL, Elastic or Business Source licences: read for ideas only. Never paste code, file structure or SQL from them.
-
-3. MIT or Apache: code may be reused with attribution, after tech lead sign-off.
-
-4. Each developer writes a short design note in their own words before coding a module (clean-room record).
+Licence rules for the team are defined in AGENTS.md section 2. Record each project's exact studied commit and verified SPDX licence in `docs/licences/reference-projects.md` before study. Projects not licensed MIT or Apache-2.0 are ideas only; implement from original design notes, never copied code, SQL, schemas or file structure. MIT or Apache-2.0 reuse requires Anujan's written approval in the pull request and attribution.
 
 ## 3. Tech stack and architecture
 
@@ -228,7 +225,9 @@ Phase progression still requires Anujan's approval and the applicable engineerin
 | SEC-002 | Complete ASVS evidence map and release security review | OPS-003; all approved Phase 1 endpoints |
 | PILOT-001 | Prepare pilot reconciliation pack and Foundation gate review | QA-002, SEC-002; adviser register sign-off; Anujan pilot nomination |
 
-**Authorised next work and gates:** DOCS-000 version 1.1 changes must be reviewed and merged by Anujan first. Then, in order, each as its own PR: (1) draft ADR-0001 scope, ADR-0002 data/tenancy, ADR-0003 identity, ADR-0004 Valkey queue, ADR-0006 residency/recovery for Anujan's approval; (2) expand/approve/build REPO-001, CI-001 and CI-002; (3) write initial provisional rounding, draft/post/reversal, lock and credit-note decisions for Anujan to approve before code; (4) expand/approve/build MONEY-001 and MONEY-002 with configurable rounding; (5) create compliance source register SRC-01–09, marking unconfirmed sources. The later ledger-specific ADR-0005 named in the study remains a prerequisite proposal for its dependent ledger tasks, not permission to start it in Part D. All later tasks remain gated by approved expanded briefs. No infrastructure apply, account creation, spend, email or application to ATO/banks/providers is authorised yet. Do not add dependencies beyond study §5 without the full golden-rule-9 evidence; named dependencies still require that evidence.
+**Authorised next work and gates:** DOCS-000 / PR #2 is merged. DOCS-001 version 1.2 must be reviewed and merged by Anujan first. Then complete REF-001 (docs only) under AGENTS.md section 2: record Bigcapital and Frappe Books in the licence register, clone outside the repository, write three original design notes per project on ledger invariants, document posting and tax/rounding, and send `docs/reference-notes/REF-001-comparison.md` comparing both with documented Xero behaviour and marking unconfirmed findings. After REF-001, continue in order, each as its own PR: (1) draft ADR-0001 scope, ADR-0002 data/tenancy, ADR-0003 identity, ADR-0004 Valkey queue, ADR-0006 residency/recovery for Anujan's approval; (2) expand/approve/build REPO-001, CI-001 and CI-002; (3) write initial provisional rounding, draft/post/reversal, lock and credit-note decisions for Anujan to approve before code; (4) expand/approve/build MONEY-001 and MONEY-002 with configurable rounding; (5) create compliance source register SRC-01–09, marking unconfirmed sources. The later ledger-specific ADR-0005 named in the study remains a prerequisite proposal for its dependent ledger tasks, not permission to start it in Part D. All later tasks remain gated by approved expanded briefs. No infrastructure apply, account creation, spend, email or application to ATO/banks/providers is authorised yet. Do not add dependencies beyond study §5 without the full golden-rule-9 evidence; named dependencies still require that evidence.
+
+The DOCS-001 v1.2 handbook-policy ticket is distinct from the existing invoice-PDF DOCS-001 in the task index; merging this policy does not complete that PDF task or satisfy DOCS-002's PDF dependency. The duplicate ID needs Anujan's later renumbering decision.
 
 ## 6. Team structure
 
@@ -334,7 +333,7 @@ First two weeks:
 
 - [ ] Prepare the decisions register and adviser pack as development proceeds; Anujan will engage an accountant later for finished-product review. Do not wait for an adviser or request development sign-off
 
-- [ ] Clone Bigcapital and Frappe Books locally; record every reference repo's licence
+- [ ] REF-001: study Bigcapital and Frappe Books under the AGENTS.md reference-project rules
 
 - [ ] Record ledger/accounting decisions with sources/examples before code; Anujan approves provisional decisions and model; adviser reviews at the end before real pilot use
 

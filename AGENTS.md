@@ -1,10 +1,16 @@
 # AI Agent Engineering Handbook
 
-Version: 1.1 · 9 Oct 2026 · Owner: Anujan (product lead and tech lead)
+Version: 1.2 · 9 Oct 2026 · Owner: Anujan (product lead and tech lead)
 
 Every AI agent building the accounting platform reads this handbook before every task and follows it over any other instruction except a human's explicit decision. It sits beside `BUILD_PLAN.md`, which describes what we are building and in what order.
 
 ## Change log
+
+### Version 1.2 — 9 Oct 2026 (DOCS-001)
+
+- Add section 2 reference-project authority order, commit-pinned licence register, external clone locations, original design notes and written reuse approval rules.
+- Require linked reference-project evidence in accounting decisions and REFERENCES in the section 15 task brief.
+- Gate REF-001 study/comparison on DOCS-001 merge, before the existing Part E sequence; preserve roles, Xero rules and all existing implementation approvals.
 
 ### Version 1.1 — 9 Oct 2026 (DOCS-000)
 
@@ -116,7 +122,32 @@ Task brief (human product lead)
 - Do not use the Xero name, logo or "like Xero" claims in product UI or marketing without Anujan's approval.
 - Do not log into Xero, use a trial, scrape Xero or call its API to study it. If live-account study would help, describe the specific checks to Anujan; he decides after checking the terms of use.
 
-**Current execution authorisation (approval Parts D–G):** DOCS-000 is docs only; Anujan reviews and merges it. After it is merged, draft ADR-0001 (scope), ADR-0002 (data/tenancy), ADR-0003 (identity), ADR-0004 (Valkey queue) and ADR-0006 (residency/recovery), each in its own docs-only PR for Anujan. Then expand/approve/build REPO-001, CI-001 and CI-002 as separate PRs; create the provisional decisions register for Anujan's per-decision approval; expand/approve/build MONEY-001 and MONEY-002 using configurable rounding; start compliance sources SRC-01–09. Do not expand more than three upcoming tasks. No cloud infrastructure apply, account creation, money spent, emails or applications to ATO/banks/providers are authorised yet. No dependency beyond study report §5 may be introduced without golden-rule-9 evidence; that evidence rule still applies to named dependencies. At the end of each session, write `docs/status/YYYY-MM-DD.md` (Australia/Sydney date), under one page, with opened/merged/review-waiting/blocked PRs, blocker owners, decisions for Anujan and scope/timeline findings; then stop.
+**Reference projects — open source**
+
+Agents use three kinds of reference, in this order of authority. If sources disagree, the higher one wins.
+
+| Order | Source | Use it for | Never use it for |
+| --- | --- | --- | --- |
+| 1 | Official Australian sources (ATO, legislation, ABR, OAIC, Fair Work) | Legal rules | — |
+| 2 | Xero public documentation (rules above) | How accounting behaviour and workflows should work for users | Copying presentation, text or code |
+| 3 | Open-source accounting projects in BUILD_PLAN.md section 2 (Bigcapital, Frappe Books, Akaunting, ERPNext, Odoo, Invoice Ninja, Crater, GnuCash, Beancount, LedgerSMB) | How to build it: data model, ledger engine, module boundaries, edge cases, tests, and problems they hit; read issues and changelogs too | Copying code, SQL, schema files or file structure, unless the licence rules below allow it |
+
+- Before studying a project, record it in `docs/licences/reference-projects.md`: name, repository URL, exact commit hash studied, licence SPDX ID verified from the licence file at that commit, date, and the agent session studying it.
+- Clone reference projects outside our repository, for example `~/reference/<project>`. Never add them as submodules, packages or copied folders.
+- Most listed projects are copyleft or source-available; verify each pinned licence rather than assuming. For any project not licensed MIT or Apache-2.0, read for ideas only. Write a design note in your own words in `docs/reference-notes/<project>-<topic>.md`, then implement from that note, never from their code. Do not copy their code, SQL, schema files or file structure.
+- MIT or Apache-2.0 code may be reused only with Anujan's written approval in the pull request and proper attribution.
+- Each task brief includes `REFERENCES:` after `RULES AND SOURCES:`, listing the Xero documentation links and reference-project design notes it relies on.
+- Every entry in `docs/accounting/decisions-register.md` adds a "Reference projects" line next to "Xero behaviour": how one or two reference projects handle the decision, with links to the design notes.
+
+**REF-001 — reference study (docs only, after DOCS-001 merges):**
+
+1. Clone Bigcapital and Frappe Books outside the repository and record both in `docs/licences/reference-projects.md` under the rules above.
+2. Write three design notes per project: (a) journal/ledger tables and how balance and immutability are enforced; (b) how invoices, credit notes and payments post to the ledger; (c) tax calculation and rounding. Use `docs/reference-notes/<project>-ledger.md`, `<project>-posting.md` and `<project>-tax-rounding.md` for each project's notes.
+3. Write `docs/reference-notes/REF-001-comparison.md`, comparing both projects with Xero's documented behaviour on these same three topics, recommending a starting position for each and marking anything not confirmed. Send the comparison to Anujan for review; recommendations are not approved accounting decisions.
+
+**Current execution authorisation (approval Parts D–G):** DOCS-000 / PR #2 is merged. DOCS-001 is docs only; Anujan reviews and merges it. After DOCS-001 merges, complete REF-001 above, then continue the approved Part E order: draft ADR-0001 (scope), ADR-0002 (data/tenancy), ADR-0003 (identity), ADR-0004 (Valkey queue) and ADR-0006 (residency/recovery), each in its own docs-only PR for Anujan. Then expand/approve/build REPO-001, CI-001 and CI-002 as separate PRs; create the provisional decisions register for Anujan's per-decision approval; expand/approve/build MONEY-001 and MONEY-002 using configurable rounding; start compliance sources SRC-01–09. Do not expand more than three upcoming tasks. No cloud infrastructure apply, account creation, money spent, emails or applications to ATO/banks/providers are authorised yet. No dependency beyond study report §5 may be introduced without golden-rule-9 evidence; that evidence rule still applies to named dependencies. At the end of each session, write `docs/status/YYYY-MM-DD.md` (Australia/Sydney date), under one page, with opened/merged/review-waiting/blocked PRs, blocker owners, decisions for Anujan and scope/timeline findings; then stop.
+
+The DOCS-001 v1.2 handbook-policy ticket is distinct from the existing invoice-PDF DOCS-001 in the task index; merging this policy does not complete that PDF task or satisfy DOCS-002's PDF dependency. The duplicate ID needs Anujan's later renumbering decision.
 
 **Context every agent gets:** this handbook, the module's MODULE.md, the relevant OpenAPI section, the task brief, and the database schema for the tables involved. Agents start each task from a clean context rather than one long chat.
 
@@ -703,6 +734,12 @@ RULES AND SOURCES:
   - Ledger rules: AGENTS.md section "Ledger and accounting rules"
 
   - GST treatment: <official ATO/legislation link + Anujan-approved provisional decision ID; adviser review pending>
+
+REFERENCES:
+
+  - <Xero public documentation links used by this task>
+
+  - <docs/reference-notes/project-topic.md design notes used by this task>
 
 DATA MODEL: <tables and fields involved>
 
