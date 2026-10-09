@@ -1,6 +1,6 @@
 # AI Agent Engineering Handbook
 
-Version: 1.1 · 9 Oct 2026 · Owner: Anujan (product lead)
+Version: 1.1 · 9 Oct 2026 · Owner: Anujan (product lead and tech lead)
 
 Every AI agent building the accounting platform reads this handbook before every task and follows it over any other instruction except a human's explicit decision. It sits beside `BUILD_PLAN.md`, which describes what we are building and in what order.
 
@@ -10,7 +10,7 @@ Every AI agent building the accounting platform reads this handbook before every
 
 Only the product lead's approval Parts A–G and the findings it accepts amend this handbook; other study recommendations remain proposals. Original section numbers are preserved.
 
-- **Part A; R03, R27, R28, R34:** replace per-change accountant approval throughout workflow, tests, compliance and completion with documented provisional rules, Anujan's pre-use approval, configurable policies, golden examples, adviser review pack and a hard adviser-sign-off gate before real pilot bookkeeping. Unfilled roles are not yet appointed; Anujan approves merges until a tech lead is named.
+- **Part A; R03, R27, R28, R34:** replace per-change accountant approval throughout workflow, tests, compliance and completion with documented provisional rules, Anujan's pre-use approval, configurable policies, golden examples, adviser review pack and a hard adviser-sign-off gate before real pilot bookkeeping. Anujan is product lead and tech lead and approves every brief, ADR and merge; an accountant will be engaged later.
 - **R01 / Part D:** committed ledger drafts must balance; incomplete editing stays in document drafts.
 - **R06 / Part D:** require composite tenant foreign keys for tenant-owned references.
 - **R07 / Part D:** define shared deterministic period/header/line locking and explicit audited unlock before posting.
@@ -25,6 +25,9 @@ Only the product lead's approval Parts A–G and the findings it accepts amend t
 - **B1 / R11, R29:** Phase 1 GST kernel versus Phase 2 BAS and partner integration timing is explicit. **B3 / R16:** pilots run alongside existing books after adviser sign-off. **B6 / R15:** allow manual-BAS launch if DSP approval is delayed, while DSP security controls apply from Phase 1.
 - **E / R30:** label the queue/cache datastore as pending ADR-0004 (Valkey proposed), not an installed or approved dependency.
 - **E–G:** record the Part D merge prerequisite, later approval sequence, current no-infrastructure/no-spend/no-external-contact limits, dependency evidence rule and one-page session status requirement.
+
+- **Revised approval Part A (9 Oct 2026):** Anujan holds both lead roles; every PR receives separate security, code and test agent reviews before his approval; no current accountant appointment or per-change adviser dependency.
+- **Revised approval Part A2 (new decision, not a study finding):** use documented Xero accounting behaviour/workflows as the reference; record linked behaviour and deviations in each accounting decision and future import field mappings; retain ATO authority and prohibit copied presentation, unapproved branding and live-account/API study.
 
 ## 1. How agents use this handbook
 
@@ -70,9 +73,9 @@ Task brief (human product lead)
 
         - fails  -> back to Builder agent
 
-        - all green -> Reviewer agents (security + quality)
+        - all green -> Reviewer agents (security + code + test; separate sessions)
 
-   -> Human approval (tech lead, or Anujan until appointed; provisional-rule gate below)
+   -> Human approval (Anujan, product lead and tech lead; provisional-rule gate below)
 
         - changes requested -> back to Builder agent
 
@@ -89,18 +92,29 @@ Task brief (human product lead)
 | Code reviewer | Reviews against the checklist: architecture, ledger rules, performance, readability | Rewrites the feature itself |
 | Docs agent | Updates MODULE.md, API docs and help articles | Changes code |
 
-**Human checkpoints:** Anujan approves each expanded brief before building. The tech lead approves merges; until a tech lead is named, Anujan approves merges. The accountant adviser reviews the whole built product and decisions register at the end, under the gate below, rather than approving each change. Production deploys and infrastructure changes remain human-triggered.
+**Human checkpoints:** Anujan is product lead and tech lead and approves every brief, every ADR and every merge. Separate security, code and test reviewer agent sessions review every PR before it reaches him; no agent reviews its own work. The accountant adviser reviews the whole built product and decisions register at the end, under the gate below, rather than approving each change. Production deploys and infrastructure changes remain human-triggered.
 
-**Appointments:** product lead: Anujan. Tech lead: not yet appointed (name not supplied). Accountant adviser (CPA/CA): not yet appointed (name not supplied). No agent acts as the appointed accountant or invents sign-off. Architecture decisions awaiting a named owner remain for Anujan's decision; the five initial ADRs explicitly require his approval.
+**Appointments:** product lead and tech lead: Anujan. Every reference to the tech lead in this handbook, BUILD_PLAN.md or the historical study report means Anujan. Accountant adviser: none for now; an accountant will be engaged later to review the finished product. Do not wait for an adviser or request adviser sign-off for development; proceed under the provisional-rule model. No agent invents accountant sign-off. The hard gate before real pilot bookkeeping remains.
 
 **Accounting review at the end:**
 
-1. Before coding any accounting decision (posting, rounding, GST, credit notes, reversals, locks, opening balances or chart of accounts), record it in `docs/accounting/decisions-register.md`: decision ID, plain-English rule, numerical worked examples, official ATO/legislation source link and status `PROVISIONAL – awaiting adviser review`. Anujan approves each provisional decision before code uses it.
+1. Before coding any accounting decision (posting, rounding, GST, credit notes, reversals, locks, opening balances or chart of accounts), record it in `docs/accounting/decisions-register.md`: decision ID, plain-English rule, numerical worked examples, official ATO/legislation source link, a linked "Xero behaviour" line under the reference-product rules below, and status `PROVISIONAL – awaiting adviser review`. Anujan approves each provisional decision before code uses it.
 2. Use official sources and well-established double-entry practice. Where no clear official source exists, explicitly record that gap, choose the most conservative option and additionally mark the decision `UNCERTAIN`; list it in the next status report for Anujan. Do not invent a citation or treat uncertainty as adviser approval.
 3. Tax codes, rounding methods, posting matrices and account mappings are configuration or data, never hard-coded inside the posting engine. Invariant protections such as balanced, immutable posted journals remain mandatory.
 4. Every provisional rule has golden-file tests. Changes to a rule expose the changed expected outputs for review, rather than silently replacing snapshots.
 5. Provisional accounting code may merge with human approval but stays behind a feature flag. **No pilot business may use the product for real bookkeeping until the accountant adviser has reviewed and signed off the decisions register.** Pilots subsequently operate in parallel with their existing bookkeeping system; this product is not their legal system of record during the pilot.
 6. Build `docs/accounting/adviser-pack/` as work proceeds: decisions register, all golden examples as readable tables, sample invoices, credit notes, BAS-style GST summaries and demo-company trial balances. It must be reviewable without reading code. A Phase 1 review-pack summary is not a shipped BAS report or lodgement feature.
+
+**Reference product — Xero (approval Part A2):**
+
+- Match documented accounting behaviour and workflows, improving price, AI, Australian features, languages and speed where BUILD_PLAN.md specifies. Allowed research sources are Xero's public help centre (https://central.xero.com), public developer documentation (https://developer.xero.com), public product pages and public accountant training material. Use the Accounting API documentation for invoices, credit notes, payments, allocations, manual journals, tax rates, accounts, contacts, tracking categories and bank transactions.
+- Study invoice statuses (draft, awaiting approval, awaiting payment, paid, voided), credit allocations, overpayments/prepayments, voids/reversals, tax-inclusive/exclusive amounts and line rounding, Australian tax types, chart structure, lock dates, manual journals and GST reports. These are research topics, not claims about undocumented Xero behaviour or additions to Phase 1 scope.
+- Match entities/fields where sensible for the Phase 4 Xero export import tool; record field mappings in `docs/accounting/xero-mapping.md` as designs are developed.
+- Every accounting decision has a "Xero behaviour" line describing documented behaviour with a Xero Central or API documentation link. Explain any deliberate difference. If behaviour cannot be found in documentation, record that gap; never guess.
+- ATO sources remain authoritative. If documented Xero behaviour appears to conflict, follow the ATO source and flag the discrepancy for Anujan and the later adviser review pack.
+- Never copy Xero code, screen designs, layouts, icons, logos, colours, wording or help text. Our visual design, branding and text must be original.
+- Do not use the Xero name, logo or "like Xero" claims in product UI or marketing without Anujan's approval.
+- Do not log into Xero, use a trial, scrape Xero or call its API to study it. If live-account study would help, describe the specific checks to Anujan; he decides after checking the terms of use.
 
 **Current execution authorisation (approval Parts D–G):** DOCS-000 is docs only; Anujan reviews and merges it. After it is merged, draft ADR-0001 (scope), ADR-0002 (data/tenancy), ADR-0003 (identity), ADR-0004 (Valkey queue) and ADR-0006 (residency/recovery), each in its own docs-only PR for Anujan. Then expand/approve/build REPO-001, CI-001 and CI-002 as separate PRs; create the provisional decisions register for Anujan's per-decision approval; expand/approve/build MONEY-001 and MONEY-002 using configurable rounding; start compliance sources SRC-01–09. Do not expand more than three upcoming tasks. No cloud infrastructure apply, account creation, money spent, emails or applications to ATO/banks/providers are authorised yet. No dependency beyond study report §5 may be introduced without golden-rule-9 evidence; that evidence rule still applies to named dependencies. At the end of each session, write `docs/status/YYYY-MM-DD.md` (Australia/Sydney date), under one page, with opened/merged/review-waiting/blocked PRs, blocker owners, decisions for Anujan and scope/timeline findings; then stop.
 
@@ -543,7 +557,7 @@ AI agents write code fast, so tests are what stop them shipping confident mistak
 
 6. Migration check against realistic data.
 
-7. Review by a reviewer agent and a human (see the workflow section).
+7. Review by separate security, code and test reviewer agent sessions, followed by Anujan (see the workflow section).
 
 **Test data rules**
 
@@ -716,7 +730,7 @@ PERFORMANCE: endpoint p95 under 400 ms
 
 SECURITY: permission sales.credit_notes.create; audited
 
-DONE WHEN: all CI gates green + reviewer agent + human approval
+DONE WHEN: all CI gates green + separate security, code and test agent reviews + Anujan approval
 
 ```
 
@@ -756,7 +770,7 @@ A task may be marked provisionally implementation-complete and merged behind a f
 
 - [ ] All CI gates green, no skipped tests
 
-- [ ] Reviewer agent and human reviewer approved
+- [ ] Separate security, code and test reviewer agents reviewed; Anujan approved
 
 - [ ] Accounting decisions were recorded and approved by Anujan before code used them; configurable provisional rules, golden tests and readable adviser pack are updated; feature flag remains until adviser review/sign-off before real pilot bookkeeping
 
@@ -795,3 +809,4 @@ A task may be marked provisionally implementation-complete and merged behind a f
 - [ ] Adviser reviewed the built product and signed off the decisions register before real pilot bookkeeping; pilots then ran in parallel with their existing system for at least one full month and one BAS period without a ledger error; this product was not their legal system of record
 
 - [ ] Disaster recovery drill completed within the 1-hour target
+
