@@ -1,6 +1,6 @@
 # Accounting Platform Build Plan
 
-Version: 1.1 · 9 Oct 2026 · Owner: Anujan (product lead)
+Version: 1.1 · 9 Oct 2026 · Owner: Anujan (product lead and tech lead)
 
 ## Change log
 
@@ -16,11 +16,16 @@ Only approval Parts A–G and their accepted report findings are incorporated; o
 - **B4 / R17:** recovery RPO <=5 minutes/RTO 1 hour are engineering targets only. **B5 / R18:** Australian AWS data/identity/log/backup residency; overseas subprocessors need Anujan's written ADR approval.
 - **B6 / R15:** report-only/manual BAS launch allowed if DSP approval is delayed; direct lodgement disabled until approved; DSP security controls mandatory from Phase 1.
 - **E / R30:** queue/cache technology remains pending ADR-0004 (Valkey proposed); diagram and stack description no longer imply Redis is settled.
-- **A, C1–C3, E–G / R05, R30:** unfilled roles treated as not yet appointed; Anujan approves merges until tech lead appointed and chooses identity after comparison ADR; tenant-local users with later multi-client isolation design; next-three brief limit and per-brief approval; Part D must merge before Part E work; current external/infrastructure/spend prohibitions and session status retained.
+- **A, C1–C3, E–G / R05, R30:** Anujan is product lead and tech lead and chooses identity after the comparison ADR; other human roles are future hires; tenant-local users with later multi-client isolation design; next-three brief limit and per-brief approval; Part D must merge before Part E work; current external/infrastructure/spend prohibitions and session status retained.
+
+- **Revised approval Part A (9 Oct 2026):** Anujan holds both lead roles; every PR receives separate security, code and test agent reviews before his approval; no current accountant appointment or per-change adviser dependency. Distinguish approved development progression from accountant-gated real use; mark human hires as future and reassess the staffing-dependent schedule.
+- **Revised approval Part A2 (new decision, not a study finding):** use documented Xero accounting behaviour/workflows as the reference; record linked behaviour and deviations in each accounting decision and future import field mappings; retain ATO authority and prohibit copied presentation, unapproved branding and live-account/API study.
 
 ## 1. Goal and how we beat Xero
 
 We build an Australian-first cloud accounting platform that matches Xero's core and wins on price, AI automation and local compliance. We do not merge the open-source projects; we study them and write our own code.
+
+Xero's publicly documented accounting behaviour and workflows are the reference, under AGENTS.md section 2. Each accounting decision records linked Xero behaviour or an explicit documentation gap and explains deviations; ATO sources take precedence. Maintain future import field mappings in `docs/accounting/xero-mapping.md`. Use original design, branding and text; no Xero code/presentation copying, unapproved product/marketing use of its name/logo or "like Xero" claims, login, trial, scraping or API study. Research topics do not expand the approved phase scope.
 
 Where we beat Xero:
 
@@ -141,7 +146,7 @@ The paid MVP target remains month 8 with invoicing, bills, bank feeds, GST/BAS a
 | 3 | 9–13 | Grow | Inventory, fixed assets, projects, multi-currency, mobile app, Peppol e-invoicing | Paying customers stable; payroll design approved |
 | 4 | 14–18 | Payroll and practices | STP Phase 2 payroll, super, leave, awards, accountant hub, Xero import tool, ISO 27001 start | — |
 
-A phase starts only when the previous gate is passed. The month ranges assume the core team below and are estimates to revisit at each gate.
+Phase progression still requires Anujan's approval and the applicable engineering gates. Accountant review and real-pilot milestones are real-use/release gates, not blockers to separately approved development with synthetic data: do not wait for the later accountant engagement to develop. No real pilot bookkeeping is permitted before register sign-off. The month ranges assumed the planned human team below and must be reassessed with Anujan.
 
 **Approved Phase 1 scope:** ledger (chart of accounts, balanced journal drafts/posting, reversal, period lock and trial balance); opening balances import; organisation and membership setup; contacts with ABN Lookup; invoices; credit notes including against paid invoices; voids; invoice PDF and email delivery; bills and approval; manual customer receipts and supplier payments with allocation; GST calculation kernel with dated tax codes; bill-attachment file upload; web app for all of these. Manual payment records do not execute external payments. Adviser-pack BAS-style examples are review material, not a Phase 1 BAS report feature.
 
@@ -227,22 +232,22 @@ A phase starts only when the previous gate is passed. The month ranges assume th
 
 ## 6. Team structure
 
-A core team of 6 to 8 people can ship Phase 1 and 2; payroll and e-invoicing need one more specialist each. Each module has one owner who is accountable for it end to end.
+The existing month estimates assumed a core human team of 6 to 8, with additional payroll and e-invoicing specialists. Those hires are not confirmed; do not treat those estimates as a validated schedule for Anujan and agents. Reassess capacity with Anujan before committing dates. Each module needs one accountable owner.
 
-Current named product lead: Anujan. Tech lead and accountant adviser: not yet appointed (names not supplied in approval). Until a tech lead is named, Anujan approves merges. Counts below describe the planned team, not confirmed appointments.
+Product lead and tech lead: Anujan, who approves every brief, ADR and merge. Wherever this plan or the historical report says tech lead, read Anujan. Security, code and test reviewer agents review every PR in sessions separate from the builder before it reaches Anujan. Accountant adviser: none for now; engage later for finished-product review. Development does not wait for adviser approval; real pilot bookkeeping still requires accountant sign-off of the decisions register. The remaining roles below are future hires, not current staff.
 
-| Role | Count | Owns |
+| Role | Status / planned count | Owns |
 | --- | --- | --- |
 | Product lead (Anujan) | 1 | Scope, priorities, compliance applications, final sign-off |
-| Tech lead / architect | 1 | Architecture, ledger engine, code review, licence approvals |
-| Backend developers | 2 | Contacts, invoicing, bills, banking, GST/BAS, reporting APIs |
-| Frontend developer | 1 | Web app UI, design system, invoice templates |
-| Mobile developer | 1 (from Phase 3) | iOS/Android app: receipts, invoices, approvals |
-| AI/ML engineer | 1 | Categorisation, receipt reading, reconciliation suggestions |
-| QA and accounting tester | 1 | Test plans, accounting correctness, regression suite |
-| Accountant adviser (CPA/CA, part-time) | 1 | End review of built product, decisions register and readable pack; register sign-off before any real pilot bookkeeping |
-| Payroll specialist | 1 (part-time from Phase 3; implementation Phase 4) | Phase 3 design/registration; Phase 4 STP Phase 2, awards and super |
-| Security and DevOps | shared with Synapvex | Hosting, backups, monitoring, penetration testing |
+| Tech lead / architect (Anujan, same person as product lead) | Current | Architecture, ledger engine, code review, licence approvals |
+| Backend developers | Future hire; 2 | Contacts, invoicing, bills, banking, GST/BAS, reporting APIs |
+| Frontend developer | Future hire; 1 | Web app UI, design system, invoice templates |
+| Mobile developer | Future hire; 1 (from Phase 3) | iOS/Android app: receipts, invoices, approvals |
+| AI/ML engineer | Future hire; 1 | Categorisation, receipt reading, reconciliation suggestions |
+| QA and accounting tester | Future hire; 1 | Test plans, accounting correctness, regression suite |
+| Accountant adviser (CPA/CA, part-time) | Future hire; 1 | End review of built product, decisions register and readable pack; register sign-off before any real pilot bookkeeping |
+| Payroll specialist | Future hire; 1 (part-time from Phase 3; implementation Phase 4) | Phase 3 design/registration; Phase 4 STP Phase 2, awards and super |
+| Security and DevOps | Future hire; shared with Synapvex | Hosting, backups, monitoring, penetration testing |
 
 Weekly rhythm: Monday planning, daily 15-minute standup, Friday demo to Anujan with adviser-pack updates; accountant review is scheduled at the end rather than required for each weekly change.
 
@@ -282,11 +287,11 @@ Accounting software is judged on one thing first: the numbers must always be rig
 
 **Code quality**
 
-- All work goes through pull requests with at least one reviewer; the tech lead reviews anything touching the ledger.
+- Every pull request is reviewed by separate security, code and test agent sessions before Anujan approves the merge; no agent reviews its own work. Anujan, as tech lead, reviews ledger changes.
 
 - Each module ships with unit tests, API tests and one end-to-end test of its main flow.
 
-- Provisional accounting implementation may merge with human review behind a feature flag. Before code, document each rule in `docs/accounting/decisions-register.md` with ID, plain-English rule, numerical examples, official ATO/legislation source and `PROVISIONAL – awaiting adviser review`; Anujan approves each before use. If no clear source exists, record that explicitly, choose the conservative option, add `UNCERTAIN` and report it to Anujan. Never invent a source.
+- Provisional accounting implementation may merge with human review behind a feature flag. Before code, document each rule in `docs/accounting/decisions-register.md` with ID, plain-English rule, numerical examples, official ATO/legislation source, linked "Xero behaviour" (or explicit documentation gap) with deviations explained, and `PROVISIONAL – awaiting adviser review`; Anujan approves each before use. If no clear source exists, record that explicitly, choose the conservative option, add `UNCERTAIN` and report it to Anujan. Never invent a source.
 
 - Keep tax codes, rounding method, posting matrices and account mappings in configuration/data, not hard-coded in the ledger engine. Every provisional rule has golden-file tests.
 
@@ -319,7 +324,7 @@ The biggest risk is building too much at once; the plan launches a narrow, corre
 | Ledger bugs | Wrong numbers, lost trust | Ledger built first by the tech lead, trial-balance tests on every build |
 | ATO approvals take longer than planned | No BAS or STP lodgement at launch | Launch with BAS reports for manual lodgement; add direct lodgement later |
 | Licence breach from copied code | Forced to open-source or legal action | Clean-room rules, licence register, tech lead approvals |
-| Scope creep (payroll, inventory too early) | Nothing ships | Phase gates: next phase starts only when the previous one passes |
+| Scope creep (payroll, inventory too early) | Nothing ships | Anujan approves development progression and engineering gates; accountant/real-pilot gates constrain real use as described in section 5 |
 | Bank feed provider cost | Margin squeeze at low prices | CSV/OFX statement import as a free fallback |
 | Accountants slow to switch from Xero | Slow growth | Free accountant hub, Xero data import tool, pilot with friendly practices |
 
@@ -327,7 +332,7 @@ First two weeks:
 
 - [ ] Confirm team members and assign module owners
 
-- [ ] Arrange the end review by a CPA/CA accountant adviser; prepare the register/pack as development proceeds (no contact sent without separate authorisation)
+- [ ] Prepare the decisions register and adviser pack as development proceeds; Anujan will engage an accountant later for finished-product review. Do not wait for an adviser or request development sign-off
 
 - [ ] Clone Bigcapital and Frappe Books locally; record every reference repo's licence
 
@@ -342,3 +347,4 @@ First two weeks:
 - [ ] Await Anujan's separate nomination of 3–5 parallel pilot businesses; no real bookkeeping before adviser register sign-off
 
 At the end of each working session, write `docs/status/YYYY-MM-DD.md` (Australia/Sydney date), under one page: PRs opened/merged/waiting/blocked, blocker owners, decisions for Anujan and findings affecting scope/timeline. Then stop and wait.
+
