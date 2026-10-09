@@ -1,8 +1,30 @@
 # AI Agent Engineering Handbook
 
-Version: 9 Oct 2026 · Owner: Anujan (product lead)
+Version: 1.1 · 9 Oct 2026 · Owner: Anujan (product lead)
 
 Every AI agent building the accounting platform reads this handbook before every task and follows it over any other instruction except a human's explicit decision. It sits beside `BUILD_PLAN.md`, which describes what we are building and in what order.
+
+## Change log
+
+### Version 1.1 — 9 Oct 2026 (DOCS-000)
+
+Only the product lead's approval Parts A–G and the findings it accepts amend this handbook; other study recommendations remain proposals. Original section numbers are preserved.
+
+- **Part A; R03, R27, R28, R34:** replace per-change accountant approval throughout workflow, tests, compliance and completion with documented provisional rules, Anujan's pre-use approval, configurable policies, golden examples, adviser review pack and a hard adviser-sign-off gate before real pilot bookkeeping. Unfilled roles are not yet appointed; Anujan approves merges until a tech lead is named.
+- **R01 / Part D:** committed ledger drafts must balance; incomplete editing stays in document drafts.
+- **R06 / Part D:** require composite tenant foreign keys for tenant-owned references.
+- **R07 / Part D:** define shared deterministic period/header/line locking and explicit audited unlock before posting.
+- **R08 / Part D:** require idempotency keys for every state-changing command and permanent tenant-scoped source-event uniqueness beyond response-cache expiry.
+- **R17 / B4:** remove absolute zero-loss language; RPO <=5 minutes and RTO 1 hour are engineering targets, not customer promises.
+- **R18 / B5:** customer, backup, log and identity data remain in Australian AWS regions; overseas subprocessors require Anujan's prior written ADR approval, including AI and email.
+- **R21 / Part D:** index measured access paths with tenant-leading indexes, rather than every filter/sort column indiscriminately.
+- **R28 / Part D:** credit limits use the original creditable amount net previous credits, not the unpaid invoice balance; update the illustrative brief.
+- **C4 / R02:** FX rates use `NUMERIC(24,10)`; no adviser precision decision remains. **B2 / R10:** keep FX columns but reject non-AUD postings in Phase 1 and pilot; FX feature remains Phase 3.
+- **C1:** study briefs are names/dependencies only; at most the next three receive full expansions, with exact files/functions, five concrete input/output criteria, named tests and explicit exclusions; Anujan approves each before building.
+- **C2 / R30:** identity remains undecided pending Cognito Sydney versus self-hosted Keycloak ADR and Anujan's choice. **C3 / R05:** tenant-local users now; ADR-0002 must describe an isolated Phase 4 multi-client hub.
+- **B1 / R11, R29:** Phase 1 GST kernel versus Phase 2 BAS and partner integration timing is explicit. **B3 / R16:** pilots run alongside existing books after adviser sign-off. **B6 / R15:** allow manual-BAS launch if DSP approval is delayed, while DSP security controls apply from Phase 1.
+- **E / R30:** label the queue/cache datastore as pending ADR-0004 (Valkey proposed), not an installed or approved dependency.
+- **E–G:** record the Part D merge prerequisite, later approval sequence, current no-infrastructure/no-spend/no-external-contact limits, dependency evidence rule and one-page session status requirement.
 
 ## 1. How agents use this handbook
 
@@ -50,7 +72,7 @@ Task brief (human product lead)
 
         - all green -> Reviewer agents (security + quality)
 
-   -> Human approval (tech lead; accountant adviser for ledger/tax/payroll)
+   -> Human approval (tech lead, or Anujan until appointed; provisional-rule gate below)
 
         - changes requested -> back to Builder agent
 
@@ -67,7 +89,20 @@ Task brief (human product lead)
 | Code reviewer | Reviews against the checklist: architecture, ledger rules, performance, readability | Rewrites the feature itself |
 | Docs agent | Updates MODULE.md, API docs and help articles | Changes code |
 
-**Human checkpoints:** the product lead approves every brief before building; the tech lead approves every merge; the accountant adviser approves anything touching the ledger, tax or payroll; production deploys and infrastructure changes are always human-triggered.
+**Human checkpoints:** Anujan approves each expanded brief before building. The tech lead approves merges; until a tech lead is named, Anujan approves merges. The accountant adviser reviews the whole built product and decisions register at the end, under the gate below, rather than approving each change. Production deploys and infrastructure changes remain human-triggered.
+
+**Appointments:** product lead: Anujan. Tech lead: not yet appointed (name not supplied). Accountant adviser (CPA/CA): not yet appointed (name not supplied). No agent acts as the appointed accountant or invents sign-off. Architecture decisions awaiting a named owner remain for Anujan's decision; the five initial ADRs explicitly require his approval.
+
+**Accounting review at the end:**
+
+1. Before coding any accounting decision (posting, rounding, GST, credit notes, reversals, locks, opening balances or chart of accounts), record it in `docs/accounting/decisions-register.md`: decision ID, plain-English rule, numerical worked examples, official ATO/legislation source link and status `PROVISIONAL – awaiting adviser review`. Anujan approves each provisional decision before code uses it.
+2. Use official sources and well-established double-entry practice. Where no clear official source exists, explicitly record that gap, choose the most conservative option and additionally mark the decision `UNCERTAIN`; list it in the next status report for Anujan. Do not invent a citation or treat uncertainty as adviser approval.
+3. Tax codes, rounding methods, posting matrices and account mappings are configuration or data, never hard-coded inside the posting engine. Invariant protections such as balanced, immutable posted journals remain mandatory.
+4. Every provisional rule has golden-file tests. Changes to a rule expose the changed expected outputs for review, rather than silently replacing snapshots.
+5. Provisional accounting code may merge with human approval but stays behind a feature flag. **No pilot business may use the product for real bookkeeping until the accountant adviser has reviewed and signed off the decisions register.** Pilots subsequently operate in parallel with their existing bookkeeping system; this product is not their legal system of record during the pilot.
+6. Build `docs/accounting/adviser-pack/` as work proceeds: decisions register, all golden examples as readable tables, sample invoices, credit notes, BAS-style GST summaries and demo-company trial balances. It must be reviewable without reading code. A Phase 1 review-pack summary is not a shipped BAS report or lodgement feature.
+
+**Current execution authorisation (approval Parts D–G):** DOCS-000 is docs only; Anujan reviews and merges it. After it is merged, draft ADR-0001 (scope), ADR-0002 (data/tenancy), ADR-0003 (identity), ADR-0004 (Valkey queue) and ADR-0006 (residency/recovery), each in its own docs-only PR for Anujan. Then expand/approve/build REPO-001, CI-001 and CI-002 as separate PRs; create the provisional decisions register for Anujan's per-decision approval; expand/approve/build MONEY-001 and MONEY-002 using configurable rounding; start compliance sources SRC-01–09. Do not expand more than three upcoming tasks. No cloud infrastructure apply, account creation, money spent, emails or applications to ATO/banks/providers are authorised yet. No dependency beyond study report §5 may be introduced without golden-rule-9 evidence; that evidence rule still applies to named dependencies. At the end of each session, write `docs/status/YYYY-MM-DD.md` (Australia/Sydney date), under one page, with opened/merged/review-waiting/blocked PRs, blocker owners, decisions for Anujan and scope/timeline findings; then stop.
 
 **Context every agent gets:** this handbook, the module's MODULE.md, the relevant OpenAPI section, the task brief, and the database schema for the tables involved. Agents start each task from a clean context rather than one long chat.
 
@@ -97,6 +132,8 @@ We build a modular monolith first: one deployable backend split into strict doma
 
 - Large customers can later move to a dedicated database without code changes (tenant routing in one place).
 
+- Phase 1 uses tenant-local user rows. ADR-0002 must explain how one accountant accesses multiple client organisations in the Phase 4 hub using separately authorised tenant contexts without cross-tenant business queries. This is a design requirement only; no hub implementation or isolation exception is authorised.
+
 **Consistency and events**
 
 - A business action and its ledger posting happen in one database transaction.
@@ -105,7 +142,7 @@ We build a modular monolith first: one deployable backend split into strict doma
 
 - Every event and job is idempotent: running it twice gives the same result.
 
-- Every write endpoint accepts an `Idempotency-Key` header so retries never double-post an invoice or payment.
+- Every state-changing command requires an idempotency key (`Idempotency-Key` for HTTP; stable command/event key for workers). Financial source-event uniqueness is permanent and tenant-scoped, independent of the API response cache, so late retries cannot double-post.
 
 **Decisions**
 
@@ -121,7 +158,11 @@ The ledger is the product: if its numbers are ever wrong, nothing else matters. 
 
 - Every journal entry has at least two lines and the sum of debits equals the sum of credits, per currency. A database constraint (deferred trigger) rejects any unbalanced entry.
 
-- Posted entries are immutable. Corrections are reversing entries linked to the original. Drafts can change; posted cannot.
+- Posted entries are immutable. Corrections are reversing entries linked to the original. Every committed ledger draft must also have at least two lines and balance; incomplete edits live in document drafts, outside ledger journal tables. Balanced ledger drafts may change atomically; posted entries cannot.
+
+- Use one locking order for all commands touching journals: affected period rows first (sorted by ID), then journal headers (sorted by ID), then any affected account/tax rows (fixed table order, sorted by ID), then line mutations. Re-read state after acquiring locks. Posting, draft edits and reversal lock their parent headers; line guards require the parent lock and reject posted parents. Period lock/unlock takes the same period row lock as posting. Discover required IDs without mutation, lock in this order, and retry from the start if identities/state changed; never acquire an earlier lock class after a later one. Verify with concurrent-session tests.
+
+- Credit notes may apply to paid invoices. The creditable amount is based on the original eligible amount net previous credits, not the remaining unpaid balance. Record exact allocation/refund treatment in the provisional decisions register before implementation; a refund payment is a separate action.
 
 - Every line carries: organisation, account, amount, currency, tax code, source document type and ID, posting date, created by, created at.
 
@@ -129,17 +170,17 @@ The ledger is the product: if its numbers are ever wrong, nothing else matters. 
 
 **Money**
 
-- Store money as integer minor units (cents) in `BIGINT` with a currency code, or `NUMERIC(19,4)` where four decimals are needed (unit prices, FX). Never floating point anywhere: database, API, frontend.
+- Store money as integer minor units (cents) in `BIGINT` with a currency code, or `NUMERIC(19,4)` where four decimals are needed for unit prices. Store `fx_rate` as `NUMERIC(24,10)`. Never floating point anywhere: database, API, frontend.
 
 - Use one shared `Money` type in the backend and frontend; raw numbers for money are rejected in code review.
 
-- Rounding: round at line level using round-half-even unless the accountant adviser specifies otherwise for a tax rule; record any rounding difference to a rounding account so the entry still balances.
+- Rounding method, calculation stage and permitted residual handling must be configurable and documented with official sources and worked examples in the provisional decisions register before implementation. Anujan approves the provisional decision before use; the adviser reviews it at the end. Record approved rounding residuals to the configured rounding account; never use it to conceal an unexplained imbalance.
 
 **GST**
 
 - Tax codes are data (a table with effective dates), not hard-coded numbers. GST 10% is a row, not a constant.
 
-- Support tax-inclusive and tax-exclusive pricing, GST-free, input-taxed and out-of-scope codes, and both cash and accrual BAS reporting.
+- Phase 1 includes the GST calculation kernel with dated tax codes, tax-inclusive/exclusive pricing and relevant GST-free, input-taxed and out-of-scope treatment under the provisional-rule model. Cash/accrual BAS reports and lodgement remain Phase 2.
 
 - Every BAS figure must trace back to the exact transactions that make it up (drill-down).
 
@@ -147,13 +188,13 @@ The ledger is the product: if its numbers are ever wrong, nothing else matters. 
 
 - Financial years follow the organisation's settings (Australian default 1 July to 30 June).
 
-- Locked periods reject new postings unless the user has the period-unlock permission, and every unlock is audited.
+- Locked periods reject new postings. An authorised user must explicitly unlock first using the period-unlock permission, re-authentication and an audited reason; permission alone does not bypass the lock. Posting and lock/unlock share the locking protocol above.
 
 - Store timestamps in UTC; store accounting dates as plain dates in the organisation's time zone.
 
 **Multi-currency**
 
-- Each line stores the transaction currency amount, the base currency amount and the rate used.
+- Each line retains transaction currency amount, base currency amount and the rate used (`NUMERIC(24,10)`). Phase 1 and pilot are AUD only: the posting gateway rejects any transaction or base currency other than AUD. Multi-currency functionality remains Phase 3; pricing must not promise it until shipped.
 
 - Realised and unrealised FX gains and losses post to dedicated accounts; revaluation is a reversible journal.
 
@@ -173,7 +214,7 @@ PostgreSQL is the single source of truth; every schema change is a reviewed, rev
 
 - Every table has `created_at`, `updated_at`, `created_by`, `updated_by`; tenant tables have `organisation_id`.
 
-- Use foreign keys, `NOT NULL`, `CHECK` and unique constraints. The database enforces rules, not only the code.
+- Use foreign keys, `NOT NULL`, `CHECK` and unique constraints. The database enforces rules, not only the code. References between tenant-owned records use composite foreign keys `(organisation_id, referenced_id)` against matching unique keys; an ID-only foreign key is insufficient. Apply this to account, tax, journal, actor and reversal references.
 
 - Use enums or lookup tables for statuses; never free-text statuses.
 
@@ -199,7 +240,7 @@ PostgreSQL is the single source of truth; every schema change is a reviewed, rev
 
 **Indexing and queries**
 
-- Every foreign key and every column used in a `WHERE` or `ORDER BY` on large tables has an index starting with `organisation_id`.
+- Index measured access paths, including foreign-key lookups and demonstrated filter/sort patterns on large tables, using tenant-leading indexes starting with `organisation_id`. Do not create an index for every individual `WHERE` or `ORDER BY` column; justify indexes with query plans and workload measurements.
 
 - No `SELECT *` in application code; no N+1 queries (detected by tests that count queries per request).
 
@@ -233,15 +274,15 @@ The API is written contract-first: the OpenAPI spec is agreed before code, and o
 
 - **Filtering and sorting:** whitelisted fields only.
 
-- **Idempotency:** `Idempotency-Key` header required on all POST endpoints that create money movements; keys stored 24 hours with the original response.
+- **Idempotency:** `Idempotency-Key` is required on all HTTP state-changing commands, regardless of method; workers use an equivalent stable command/event key. Scope keys to tenant, principal and operation; bind them to a request fingerprint and reject reuse with a different payload. Store the original response for 24 hours, but retain permanent tenant-scoped financial source-event uniqueness so response expiry cannot permit another posting.
 
 - **Concurrency:** `ETag` / `If-Match` on updates so two users can't overwrite each other's changes.
 
 - **Rate limits:** per user, per organisation and per API client, with `429` and `Retry-After` headers.
 
-- **Webhooks:** signed with HMAC-SHA256 and a timestamp, retried with exponential backoff for 72 hours, with a delivery log customers can see.
+- **Webhooks (Phase 2 onward):** signed with HMAC-SHA256 and a timestamp, retried with exponential backoff for 72 hours, with a delivery log customers can see.
 
-- **Partner access:** OAuth 2.0 authorisation code with PKCE, granular scopes (`invoices.read`, `invoices.write`), tokens revocable by the customer.
+- **Partner access (Phase 2 onward):** OAuth 2.0 authorisation code with PKCE, granular scopes (`invoices.read`, `invoices.write`), tokens revocable by the customer.
 
 - **Bulk:** large imports (opening balances, Xero migration) run as async jobs with a job status endpoint, never one huge request.
 
@@ -251,7 +292,7 @@ We build to OWASP ASVS Level 2 everywhere and Level 3 for identity, the ledger, 
 
 **Identity and login**
 
-- Use a proven identity provider (e.g. Auth0, Clerk, AWS Cognito or Keycloak); never write our own password or token crypto.
+- Use a proven identity provider; never write password or token crypto. No provider is selected yet. ADR-0003 must compare AWS Cognito (`ap-southeast-2`) with self-hosted Keycloak on MFA/passkeys, step-up authentication, Australian data residency, small-team patching/upgrades/on-call, cost at 1,000 and 100,000 users (with explicit usage assumptions) and lock-in. Recommend one with reasons; Anujan decides before implementation.
 
 - MFA mandatory for every user (authenticator app or passkey); SMS only as a last-resort fallback.
 
@@ -287,7 +328,7 @@ We build to OWASP ASVS Level 2 everywhere and Level 3 for identity, the ledger, 
 
 - Field-level encryption for tax file numbers, bank account numbers and identity documents; mask them in the UI and logs (show last 3 digits).
 
-- All customer data hosted in Australia (AWS Sydney) including backups.
+- All customer data, backups, logs and identity data stay in Australian AWS regions. Any overseas subprocessor, including AI or email providers, requires Anujan's written approval in an ADR before use. A no-training or zero-retention promise does not itself authorise overseas processing.
 
 **Secrets**
 
@@ -365,7 +406,7 @@ Speed is a feature we beat Xero on, so every change is measured against fixed bu
 
 - Heavy work (imports, report exports, bank sync, AI processing, emails, PDFs) runs in background jobs with progress shown to the user.
 
-- Cache read-heavy reference data (tax codes, chart of accounts, settings) in Redis with clear invalidation on change; never cache data across tenants under a shared key.
+- Cache read-heavy reference data (tax codes, chart of accounts, settings) in the approved Redis-compatible datastore (Valkey proposed; ADR-0004 pending) with clear invalidation on change; never cache data across tenants under a shared key.
 
 - Use database connection pooling (PgBouncer or RDS Proxy).
 
@@ -383,13 +424,13 @@ Speed is a feature we beat Xero on, so every change is measured against fixed bu
 
 ## 9. Reliability and operations
 
-Target 99.9% monthly availability (about 43 minutes of downtime a month) at launch, 99.95% by Phase 4, with no data loss ever.
+Target 99.9% monthly availability (about 43 minutes of downtime a month) at launch, 99.95% by Phase 4. Recovery targets below are engineering targets only, not customer promises.
 
 **Backups and recovery**
 
 - Point-in-time recovery on the database (recovery point objective: 5 minutes or less).
 
-- Recovery time objective: 1 hour for a full region-level restore.
+- Recovery time objective: 1 hour for a full region-level restore. Both this RTO and the RPO of 5 minutes or less are engineering targets to test, not guarantees to customers.
 
 - Daily encrypted backups copied to a second Australian region, kept for 35 days; monthly snapshots kept 7 years.
 
@@ -479,7 +520,7 @@ AI agents write code fast, so tests are what stop them shipping confident mistak
 | --- | --- | --- | --- |
 | Unit tests | Domain rules (GST, rounding, posting) are correct | Vitest / Jest | 90% line coverage on `domain` layers, 80% overall |
 | Property-based tests | Ledger stays balanced for thousands of random transactions | fast-check | Ledger, tax, FX, payroll modules |
-| Golden-file tests | BAS, payslips and reports match accountant-verified outputs exactly | Snapshot fixtures signed off by the adviser | Every report and tax form |
+| Golden-file tests | Outputs match worked examples for every provisional rule and reveal rule changes | Source-backed provisional fixtures approved by Anujan before use; adviser reviews the register and readable pack at the end | Every provisional accounting rule, report and tax form; hard adviser gate before real pilot bookkeeping |
 | Integration tests | Module + real PostgreSQL + RLS work together | Testcontainers | Every use case |
 | Tenant isolation tests | No endpoint returns another organisation's data | Custom suite | Every endpoint, automatically |
 | Contract tests | API matches the OpenAPI spec; external providers' mocks match their real APIs | Schemathesis / Pact | Every endpoint and integration |
@@ -526,7 +567,7 @@ AI suggests; people decide. No AI feature posts to the ledger, pays money or lod
 
 - **Prompts in code:** prompts are versioned files in the repo, reviewed like code, with tests.
 
-- **Data use:** customer data is never used to train third-party models; use AI providers with zero-retention or no-training terms and Australian or approved data handling. Tell customers clearly in the privacy policy.
+- **Data use:** customer data is never used to train third-party models; use AI providers with zero-retention or no-training terms and data handling compliant with section 7. Customer data stays in Australian AWS regions; an overseas AI subprocessor requires Anujan's prior written ADR approval. Tell customers clearly in the privacy policy.
 
 - **Minimum data:** send the model only the fields it needs (e.g. description and amount), never tax file numbers, bank account numbers or full customer records.
 
@@ -538,11 +579,11 @@ AI suggests; people decide. No AI feature posts to the ledger, pays money or lod
 
 ## 13. Australian compliance rules
 
-Agents implement compliance rules only from a source document linked in the task brief and checked by the accountant adviser; tax and payroll rules change often, so every rate and threshold is stored as dated data, never as a constant.
+Agents implement accounting/compliance rules from official sources linked in the task brief and the provisional decisions register under section 2. Anujan approves each decision before code uses it; the accountant adviser reviews the completed product/register and readable pack at the end. Unclear-source accounting choices are explicitly UNCERTAIN, conservative and reported to Anujan. Tax and payroll rates and thresholds are dated data, never constants. DSP framework security controls are requirements from Phase 1 even if direct ATO integration is delayed.
 
 | Area | What agents must build in | Owner of the source |
 | --- | --- | --- |
-| Tax invoices | Words "Tax invoice", seller name and ABN, date, item descriptions, GST amount; buyer identity or ABN for sales of $1,000 or more | ATO rules, accountant adviser |
+| Tax invoices | Words "Tax invoice", seller name and ABN, date, item descriptions, GST amount; buyer identity or ABN for sales of $1,000 or more | Anujan / designated official-source researcher; adviser end review |
 | GST and BAS | Cash and accrual BAS, GST labels traced to transactions, lodgement via SBR once approved | ATO, tech lead |
 | Record keeping | Financial records kept and retrievable for at least 5 years; payroll records at least 7 years; nothing auto-deleted earlier | ATO, Fair Work |
 | Payroll | STP Phase 2 reporting, super guarantee rate as dated data, payday super rules, leave accruals, award interpretation reviewed by the payroll specialist | ATO, Fair Work, payroll specialist |
@@ -553,7 +594,7 @@ Agents implement compliance rules only from a source document linked in the task
 | Subscriptions | Clear pricing, cancellation and refunds under Australian Consumer Law | Product lead |
 | E-invoicing | Peppol PINT A-NZ format via an accredited access point | Tech lead |
 
-Before any of these is marked done, the owner confirms it against the current official source and records the source link and check date in the module's `MODULE.md`.
+Before implementation is marked provisionally complete, Anujan or the designated source researcher confirms current official-source evidence (adviser confirmation is reserved for the end review, not required per change) and records its link/check date in `MODULE.md` and the decisions register where accounting-related. Provisional accounting code stays feature-flagged. Real pilot bookkeeping remains prohibited until the accountant adviser signs off the decisions register. If DSP approval is delayed at the end of Phase 2, launch may use BAS reports for manual lodgement; direct lodgement stays disabled until approved, and DSP security controls remain mandatory.
 
 ## 14. Repository and code conventions
 
@@ -619,6 +660,8 @@ BUILD_PLAN.md     the build plan
 
 Most AI mistakes come from vague briefs, so every task given to a builder agent uses this template, and every pull request is reviewed against the checklist below.
 
+`STUDY_REPORT.md` section 7 is accepted only as task names and dependencies, superseded by the Phase 1/2 allocation in `BUILD_PLAN.md` version 1.1. Before a builder starts, the planner expands that task with exact files and functions in scope, at least five specific acceptance criteria with concrete example inputs and expected outputs, named test cases, and explicit out-of-scope items. Never expand more than the next three tasks ahead. Anujan approves each expanded brief before building starts. The example below is a template, not an approved build brief; replace its placeholders with exact task paths, sources and decision IDs.
+
 **Task brief template (copy for each task)**
 
 ```
@@ -631,11 +674,11 @@ MODULE: sales (read docs/modules/sales/MODULE.md first)
 
 IN SCOPE:
 
-  - POST /v1/invoices/{id}/credit-notes endpoint
+  - POST /v1/invoices/{id}/credit-notes endpoint; list exact controller path/function here
 
-  - Ledger posting: reverse revenue and GST for the credited lines
+  - Ledger posting: reverse revenue and GST for the credited lines; list exact use-case and policy paths/functions here
 
-  - Credit note PDF using the existing invoice template
+  - Credit note PDF using the existing invoice template; list exact renderer path/function here
 
 OUT OF SCOPE:
 
@@ -645,21 +688,29 @@ RULES AND SOURCES:
 
   - Ledger rules: AGENTS.md section "Ledger and accounting rules"
 
-  - GST treatment: <link to ATO page + adviser note>
+  - GST treatment: <official ATO/legislation link + Anujan-approved provisional decision ID; adviser review pending>
 
 DATA MODEL: <tables and fields involved>
 
 ACCEPTANCE CRITERIA:
 
-  1. Credit note total cannot exceed invoice balance
+  1. Original creditable total AUD 100.00, prior credits AUD 30.00: credit AUD 70.01 rejects; AUD 70.00 is within the amount cap.
 
-  2. Journal entry balances and reverses GST correctly
+  2. Fully paid original creditable total AUD 100.00, no prior credits: credit AUD 20.00 passes the cap even though unpaid balance is AUD 0.00; refund is a separate task.
 
-  3. Invoice shows remaining balance after credit
+  3. For an approved fixture reversing revenue AUD 20.00 and tax AUD 0.00: total journal debits equal credits at AUD 20.00; the exact accounts come from the approved posting matrix (these figures assert no tax rate).
 
-TESTS REQUIRED: unit, property (ledger balance), integration,
+  4. Unpaid invoice AUD 100.00, no prior credits or payments, credit AUD 20.00: remaining amount due is AUD 80.00 under the approved allocation policy.
 
-  tenant isolation, one Playwright journey
+  5. Retry the same key/body for that AUD 20.00 credit: return the original credit ID and exactly one posting; changed body with the same key rejects.
+
+  6. Caller in organisation A supplies an invoice ID belonging to B: deny without returning B's invoice details; create zero credits/journals.
+
+TESTS REQUIRED: named cases credit-cap-boundary, paid-invoice-credit, balanced-credit-fixture,
+
+  partial-credit-remaining-due, duplicate-credit-retry and cross-tenant-credit-denied;
+
+  unit, property, real-DB integration, isolation and a named Playwright credit journey.
 
 PERFORMANCE: endpoint p95 under 400 ms
 
@@ -679,7 +730,7 @@ DONE WHEN: all CI gates green + reviewer agent + human approval
 
 - [ ] Security: permission check present, input validated, no secrets, no sensitive data in logs, audit entry for sensitive actions
 
-- [ ] API: matches OpenAPI, Problem Details errors, pagination, idempotency key on money endpoints
+- [ ] API: matches OpenAPI, Problem Details errors, pagination, idempotency key on every state-changing command and permanent financial source-event uniqueness
 
 - [ ] Database: migration backward compatible, indexes for new queries, no N+1
 
@@ -693,11 +744,11 @@ DONE WHEN: all CI gates green + reviewer agent + human approval
 
 - [ ] Dependencies: any new one justified and licence-checked
 
-- [ ] Assumptions listed and nothing invented (tax rates, API fields, rules)
+- [ ] Assumptions listed and nothing invented (tax rates, API fields, rules); accounting decisions recorded before code, Anujan-approved, provisional/UNCERTAIN status visible, golden examples and adviser pack updated
 
 ## 16. Definition of done and release checklist
 
-A task is done only when a customer could safely use it in production; a release goes out only when every item below is ticked.
+A task may be marked provisionally implementation-complete and merged behind a feature flag under section 2. That is not approval for real bookkeeping: the accountant adviser must review and sign off the decisions register before any real pilot use. A release goes out only when the applicable items below are ticked.
 
 **Definition of done (every task)**
 
@@ -707,7 +758,7 @@ A task is done only when a customer could safely use it in production; a release
 
 - [ ] Reviewer agent and human reviewer approved
 
-- [ ] Accountant adviser signed off any ledger, tax or payroll change
+- [ ] Accounting decisions were recorded and approved by Anujan before code used them; configurable provisional rules, golden tests and readable adviser pack are updated; feature flag remains until adviser review/sign-off before real pilot bookkeeping
 
 - [ ] Behind a feature flag if not ready for all customers
 
@@ -725,7 +776,7 @@ A task is done only when a customer could safely use it in production; a release
 
 - [ ] Backup taken and last restore test passed this month
 
-- [ ] Golden-file tests (BAS, payslips, reports) pass unchanged or changes signed off
+- [ ] Golden-file tests (BAS, payslips, reports and provisional rules) pass unchanged or expected-output changes are explicitly reviewed; adviser register sign-off required before real bookkeeping
 
 - [ ] Not within 2 days of a BAS or STP due date (or approved)
 
@@ -737,10 +788,10 @@ A task is done only when a customer could safely use it in production; a release
 
 - [ ] Independent penetration test done and findings fixed
 
-- [ ] ATO DSP requirements met for the features being launched
+- [ ] DSP security controls met from Phase 1; ATO approval obtained for direct lodgement if enabled, or Phase 2 launch explicitly report-only for manual BAS lodgement with direct lodgement disabled
 
 - [ ] Privacy policy, terms, and data breach process live
 
-- [ ] Pilot customers ran their books for at least one full month and one BAS period without a ledger error
+- [ ] Adviser reviewed the built product and signed off the decisions register before real pilot bookkeeping; pilots then ran in parallel with their existing system for at least one full month and one BAS period without a ledger error; this product was not their legal system of record
 
 - [ ] Disaster recovery drill completed within the 1-hour target
